@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Rising Water{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Insights</p>
+  <h1>Data Dashboard</h1>
+  <p class="lead">Overview of your dataset health and model performance at a glance.</p>
+</header>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Dataset Rows</h3>
+    <p class="stat-value">{{ summary.rows }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Avg Rainfall</h3>
+    <p class="stat-value">{{ summary.avg_rainfall }}<span style="font-size:1rem;color:var(--muted)"> mm</span></p>
+  </div>
+  <div class="stat-card">
+    <h3>Avg Water Rise</h3>
+    <p class="stat-value">{{ summary.avg_water_rise }}<span style="font-size:1rem;color:var(--muted)"> cm</span></p>
+  </div>
+  <div class="stat-card">
+    <h3>Model Status</h3>
+    <p class="stat-value">{% if model_ready %}Ready{% else %}Pending{% endif %}</p>
+  </div>
+</div>
+
+{% if metrics %}
+<section class="metrics-section card">
+  <h2 class="card-title">Model Performance</h2>
+  <p class="card-subtitle">Evaluation metrics from the latest test split.</p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>MAE</h3>
+      <p class="stat-value">{{ metrics.mae }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>RMSE</h3>
+      <p class="stat-value">{{ metrics.rmse }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>R&sup2;</h3>
+      <p class="stat-value">{{ metrics.r2 }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Test Samples</h3>
+      <p class="stat-value">{{ metrics.samples }}</p>
+    </div>
+  </div>
+  <p class="hint">Refresh metrics with <code>python -m src.evaluate</code></p>
+</section>
+{% else %}
+  <div class="alert alert-info">No evaluation metrics yet. Train and evaluate the model to see performance.</div>
+{% endif %}
+
+<div class="form-actions" style="margin-top:2rem;">
+  <a href="{{ url_for('dataset') }}" class="btn btn-secondary">Manage Dataset</a>
+  <a href="{{ url_for('predict') }}" class="btn btn-primary">Make Prediction</a>
+</div>
+{% endblock %}

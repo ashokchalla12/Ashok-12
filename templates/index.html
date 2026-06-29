@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Rising Water Prediction{% endblock %}
+{% block main_class %}hero{% endblock %}
+
+{% block content %}
+<section class="hero-card">
+  <p class="eyebrow">Hydrological Intelligence</p>
+  <h1>Predict Rising Water Levels</h1>
+  <p class="lead">
+    A refined machine learning platform that estimates water rise from rainfall,
+    river level, soil moisture, and environmental signals — with clarity and confidence.
+  </p>
+
+  {% if model_ready %}
+    <span class="badge badge-success">Model Ready</span>
+  {% else %}
+    <span class="badge badge-warning">Model Not Trained</span>
+    <p class="hint">Train the model first: <code>python -m src.train</code></p>
+  {% endif %}
+
+  <div class="cta-group">
+    <a href="{{ url_for('predict') }}" class="btn btn-primary">Make a Prediction</a>
+    <a href="{{ url_for('dataset') }}" class="btn btn-secondary">Add Dataset</a>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-ghost">View Dashboard</a>
+  </div>
+</section>
+{% endblock %}

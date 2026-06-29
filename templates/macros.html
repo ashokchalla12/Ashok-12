@@ -1,0 +1,32 @@
+{% macro feature_label(name) -%}
+  {{ name.replace('_', ' ').replace('pct', '%').replace('mm', '(mm)').replace('kmh', '(km/h)').replace('hpa', '(hPa)').title() }}
+{%- endmacro %}
+
+{% macro numeric_field(feature, value='') %}
+<label class="field">
+  <span class="field-label">{{ feature_label(feature) }}</span>
+  <input type="number" step="any" name="{{ feature }}" value="{{ value }}" required>
+</label>
+{% endmacro %}
+
+{% macro season_select(selected='summer') %}
+<label class="field">
+  <span class="field-label">Season</span>
+  <select name="season" required>
+    {% for option in ['spring', 'summer', 'autumn', 'winter'] %}
+    <option value="{{ option }}" {% if option == selected %}selected{% endif %}>{{ option.title() }}</option>
+    {% endfor %}
+  </select>
+</label>
+{% endmacro %}
+
+{% macro land_use_select(selected='agricultural') %}
+<label class="field">
+  <span class="field-label">Land Use</span>
+  <select name="land_use" required>
+    {% for option in ['urban', 'agricultural', 'forest', 'wetland'] %}
+    <option value="{{ option }}" {% if option == selected %}selected{% endif %}>{{ option.title() }}</option>
+    {% endfor %}
+  </select>
+</label>
+{% endmacro %}

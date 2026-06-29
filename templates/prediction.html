@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "macros.html" import feature_label, numeric_field, season_select, land_use_select %}
+{% block title %}Predict - Rising Water{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Forecast</p>
+  <h1>Water Rise Prediction</h1>
+  <p class="lead">Enter environmental readings to estimate expected water level rise and flood risk.</p>
+</header>
+
+{% if not model_ready %}
+  <div class="alert alert-warning">Train the model before predicting: <code>python -m src.train</code></div>
+{% endif %}
+
+<form method="POST" class="prediction-form card">
+  <h2 class="card-title">Environmental Inputs</h2>
+  <p class="card-subtitle">All fields are required for an accurate forecast.</p>
+
+  <div class="form-grid">
+    {{ numeric_field('rainfall_mm', '45') }}
+    {{ numeric_field('temperature_c', '22') }}
+    {{ numeric_field('humidity_pct', '70') }}
+    {{ numeric_field('wind_speed_kmh', '15') }}
+    {{ numeric_field('river_level_m', '3.5') }}
+    {{ numeric_field('soil_moisture_pct', '55') }}
+    {{ numeric_field('evaporation_mm', '2.5') }}
+    {{ numeric_field('pressure_hpa', '1013') }}
+    {{ season_select('summer') }}
+    {{ land_use_select('agricultural') }}
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary" {% if not model_ready %}disabled{% endif %}>Run Prediction</button>
+  </div>
+</form>
+
+{% if result %}
+<section class="result-card risk-{{ result.risk_level }}">
+  <p class="eyebrow">Forecast Result</p>
+  <h2>Predicted Water Rise</h2>
+  <p class="result-value">{{ result.water_rise_cm }} <span>cm</span></p>
+  <p class="risk-label">Risk Level: <strong>{{ result.risk_level|upper }}</strong></p>
+</section>
+{% endif %}
+{% endblock %}

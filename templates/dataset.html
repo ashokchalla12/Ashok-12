@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% from "macros.html" import numeric_field, season_select, land_use_select %}
+{% block title %}Dataset - Rising Water{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">Data Management</p>
+  <h1>Dataset Manager</h1>
+  <p class="lead">Upload CSV files or add records manually to grow your training dataset. Retrain the model after adding new data.</p>
+</header>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Total Records</h3>
+    <p class="stat-value">{{ total_rows }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Required Columns</h3>
+    <p class="stat-value">{{ required_columns|length }}</p>
+  </div>
+</div>
+
+<div class="grid-2">
+  <section class="card">
+    <h2 class="card-title">Upload CSV</h2>
+    <p class="card-subtitle">Import multiple rows at once. Columns must match the schema below.</p>
+
+    <form method="POST" enctype="multipart/form-data" class="dataset-upload-form">
+      <input type="hidden" name="action" value="upload">
+      <div class="upload-zone">
+        <p>Drag and drop a CSV file, or browse to select one.</p>
+        <input type="file" name="dataset_file" accept=".csv" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Upload Dataset</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">Add Single Record</h2>
+    <p class="card-subtitle">Manually enter one observation including the target water rise value.</p>
+
+    <form method="POST" class="dataset-manual-form">
+      <input type="hidden" name="action" value="manual">
+      <div class="form-grid">
+        {{ numeric_field('rainfall_mm') }}
+        {{ numeric_field('temperature_c') }}
+        {{ numeric_field('humidity_pct') }}
+        {{ numeric_field('wind_speed_kmh') }}
+        {{ numeric_field('river_level_m') }}
+        {{ numeric_field('soil_moisture_pct') }}
+        {{ numeric_field('evaporation_mm') }}
+        {{ numeric_field('pressure_hpa') }}
+        {{ season_select() }}
+        {{ land_use_select() }}
+        <label class="field">
+          <span class="field-label">Water Rise (cm)</span>
+          <input type="number" step="any" name="water_rise_cm" required>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Record</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<section class="section-block card">
+  <h2 class="card-title">Required CSV Columns</h2>
+  <p class="card-subtitle">{{ required_columns|join(', ') }}</p>
+</section>
+
+{% if preview %}
+<section class="section-block">
+  <h2>Recent Records</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          {% for col in preview[0].keys() %}
+          <th>{{ col.replace('_', ' ') }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in preview %}
+        <tr>
+          {% for value in row.values() %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

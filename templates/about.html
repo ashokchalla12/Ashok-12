@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}About - Rising Water{% endblock %}
+
+{% block content %}
+<header class="page-header">
+  <p class="eyebrow">About</p>
+  <h1>About This Project</h1>
+  <p class="lead">
+    Rising Water Prediction is an end-to-end machine learning platform that forecasts
+    water level rise using environmental and hydrological features.
+  </p>
+</header>
+
+<section class="card section-block">
+  <h2 class="card-title">Pipeline</h2>
+  <ol class="pipeline-list">
+    <li>Data collection and cleaning</li>
+    <li>Feature engineering and preprocessing</li>
+    <li>Model training with cross-validation</li>
+    <li>Evaluation and reporting</li>
+    <li>Web-based inference and dataset management</li>
+  </ol>
+</section>
+
+<section class="card section-block">
+  <h2 class="card-title">Tech Stack</h2>
+  <ul class="feature-list">
+    <li>Python, pandas, scikit-learn</li>
+    <li>Flask for the web interface</li>
+    <li>Jupyter notebooks for exploratory analysis</li>
+  </ul>
+</section>
+{% endblock %}

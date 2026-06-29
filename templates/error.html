@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }} - Rising Water{% endblock %}
+{% block main_class %}hero{% endblock %}
+
+{% block content %}
+<section class="hero-card">
+  <p class="eyebrow">Error {{ code }}</p>
+  <h1>Something went wrong</h1>
+  <p class="lead">{{ message }}</p>
+  <div class="cta-group">
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+  </div>
+</section>
+{% endblock %}
